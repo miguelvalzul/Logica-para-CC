@@ -13,9 +13,22 @@ def Vi(A):
 		else:
 			return True
 	elif A.label == "&":
-		if Vi(A.left) == True && Vi(A.right) == True:
+		if Vi(A.left) == True and Vi(A.right) == True:
 			return True
 		else:
 			return False
 	elif A.label == "|":
-		
+		if Vi(A.left) == True or Vi(A.right) == True:
+			return True
+		else:
+			return False
+	elif A.label == "->":
+		if Vi(A.left) == False or Vi(A.right) == True:
+			return True
+		else:
+			return False
+	elif A.label == "<->":
+		if Vi(A.left) == Vi(A.right):
+			return True
+		else:
+			return False
