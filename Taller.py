@@ -33,4 +33,4 @@ def Vi(A):
 		else:
 			return False
 		
-I = {"p" = True, "q" = True, "r" = False}
+I = {"p": True, "q": True, "r": False}
