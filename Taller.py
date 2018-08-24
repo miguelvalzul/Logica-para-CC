@@ -6,7 +6,7 @@ class Tree(object):
 
 def Vi(A):
 	if A.right == None:
-		return I(A.label)
+		return I[A.label]
 	elif A.label == "~":
 		if Vi(A.right) == True:
 			return False
