@@ -55,5 +55,10 @@ def StringtoTree(A):
 			stack.append(arb)
 		else:
 			stack.append(Tree(c, None, None))
+	return stack[-1]
 
 I = {"p": True, "q": True, "r": False}
+form = raw_input("Ingrese la formula, en notacion polaca inversa: ")
+Arb = StringtoTree(form)
+print ("Usted ha creado el arbol", Inorder(Arb))
+print ("El valor de verdad del arbol es" + Vi(Arb))
