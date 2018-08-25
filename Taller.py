@@ -54,14 +54,6 @@ def Equival(arb1, arb2, I):
 			a = False
 			break
 	return a
-		
-def Inorder(A):
-	if A.right == None:
-		return A.label,
-	elif A.label == '~':
-		return A.label + Inorder(A.right)
-	else:
-		return "(" + Inorder(A.left) + A.label + Inorder(A.right) + ")"
 
 def StringtoTree(A):
 	stack = []
@@ -70,7 +62,7 @@ def StringtoTree(A):
 			arb = Tree(stack[-1], stack[-2], c)
 			del stack[-1]
 			del stack[-1]
-			stack.append(aux)
+			stack.append(arb)
 		elif c == '~':
 			arb = Tree(None, stack[-1], c)
 			del stack[-1]
@@ -79,13 +71,10 @@ def StringtoTree(A):
 			stack.append(Tree(None, None, c))
 	return stack[-1]
 
-
 form = raw_input("Ingrese la primera formula, en notacion polaca inversa: ")
 Arb1 = StringtoTree(form)
-print ("Usted ha creado la formula", Inorder(Arb1))
 form = raw_input("Ingrese la segunda formula, en notacion polaca inversa: ")
 Arb2 = StringtoTree(form)
-print ("Usted ha creado la formula", Inorder(Arb2))
 i = Interps()
 if Equival(Arb1, Arb2, i):
 	print "Las dos formulas son equivalentes"
