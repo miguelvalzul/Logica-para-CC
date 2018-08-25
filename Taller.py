@@ -8,22 +8,22 @@ def Vi(A,I):
 	if A.right == None:
 		return I[A.label]
 	elif A.label == "~":
-		if Vi(A.right, I) == True:
+		if Vi(A.right, I):
 			return False
 		else:
 			return True
 	elif A.label == "&":
-		if Vi(A.left, I) == True and Vi(A.right, I) == True:
+		if Vi(A.left, I) and Vi(A.right, I):
 			return True
 		else:
 			return False
 	elif A.label == "|":
-		if Vi(A.left, I) == True or Vi(A.right, I) == True:
+		if Vi(A.left, I) or Vi(A.right, I):
 			return True
 		else:
 			return False
 	elif A.label == ">":
-		if Vi(A.left, I) == False or Vi(A.right, I) == True:
+		if Vi(A.left, I) == False or Vi(A.right, I):
 			return True
 		else:
 			return False
@@ -49,7 +49,7 @@ def Interps():
 
 def Equival(arb1, arb2, I):
 	a = True
-	for x in I():
+	for x in I:
 		if Vi(arb1, x) != Vi(arb2,x):
 			a = False
 			break
@@ -66,7 +66,7 @@ def Inorder(A):
 def StringtoTree(A):
 	stack = []
 	for c in A:
-		if c == "&" or c == "|" or c == "->" or c == "<->":
+		if c == "&" or c == "|" or c == ">":
 			arb = Tree(stack[-1], stack[-2], c)
 			del stack[-1]
 			del stack[-1]
