@@ -8,27 +8,22 @@ def Vi(A,I):
 	if A.right == None:
 		return I[A.label]
 	elif A.label == "~":
-		if Vi(A.right) == True:
+		if Vi(A.right, I) == True:
 			return False
 		else:
 			return True
 	elif A.label == "&":
-		if Vi(A.left) == True and Vi(A.right) == True:
+		if Vi(A.left, I) == True and Vi(A.right, I) == True:
 			return True
 		else:
 			return False
 	elif A.label == "|":
-		if Vi(A.left) == True or Vi(A.right) == True:
+		if Vi(A.left, I) == True or Vi(A.right, I) == True:
 			return True
 		else:
 			return False
-	elif A.label == "->":
-		if Vi(A.left) == False or Vi(A.right) == True:
-			return True
-		else:
-			return False
-	elif A.label == "<->":
-		if Vi(A.left) == Vi(A.right):
+	elif A.label == ">":
+		if Vi(A.left, I) == False or Vi(A.right, I) == True:
 			return True
 		else:
 			return False
