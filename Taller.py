@@ -1,35 +1,54 @@
+#-*-coding: utf-8-*-
+
+#Miguel Valencia Z y Nicolás Rojas
+
 class Tree(object):
-	def __init__(self, left, right, label):
+	def __init__(self, label, left, right):
 		self.left = left
 		self.right = right
 		self.label = label
 
+def Inorder(f):
+    if f.right == None:
+        print f.label,
+    elif f.label == '-':
+        print f.label,
+        Inorder(f.right)
+    else:
+        print "(",
+        Inorder(f.left)
+        print f.label,
+        Inorder(f.right)
+        print ")",
+
+
+
 def Vi(A,I):
 	if A.right == None:
 		return I[A.label]
-	elif A.label == "~":
+	elif A.label == "-":
 		if Vi(A.right, I):
 			return False
 		else:
 			return True
-	elif A.label == "&":
+	elif A.label == "Y":
 		if Vi(A.left, I) and Vi(A.right, I):
 			return True
 		else:
 			return False
-	elif A.label == "|":
+	elif A.label == "O":
 		if Vi(A.left, I) or Vi(A.right, I):
 			return True
 		else:
 			return False
 	elif A.label == ">":
-		if Vi(A.left, I) == False or Vi(A.right, I):
+		if not Vi(A.left, I) or Vi(A.right, I):
 			return True
 		else:
 			return False
 
 def Interps():
-	letrasProposicionales = ['p', 'q', 'r']
+	letrasProposicionales = ['p', 'q', 'r','t','s']
 	interps = []
 	aux = {}
 	for a in letrasProposicionales:
@@ -56,27 +75,74 @@ def Equival(arb1, arb2, I):
 	return a
 
 def StringtoTree(A):
-	stack = []
-	for c in A:
-		if c == "&" or c == "|" or c == ">":
-			arb = Tree(stack[-1], stack[-2], c)
-			del stack[-1]
-			del stack[-1]
-			stack.append(arb)
-		elif c == '~':
-			arb = Tree(None, stack[-1], c)
-			del stack[-1]
-			stack.append(arb)
-		else:
-			stack.append(Tree(None, None, c))
-	return stack[-1]
+    letrasProposicionales = ['p', 'q', 'r', 's', 't', 'v']
+    conectivos = ['O', 'Y', '>']
+    pila = []
+    for c in A:
+        if c in letrasProposicionales:
+            pila.append(Tree(c, None, None))
+        elif c == '-':
+            aux = Tree(c, None, pila[-1])
+            del pila[-1]
+            pila.append(aux)
+        elif c in conectivos:
+            aux = Tree(c, pila[-1], pila[-2])
+            del pila[-1]
+            del pila[-1]
+            pila.append(aux)
+    return pila[-1]
 
-form = raw_input("Ingrese la primera formula, en notacion polaca inversa: ")
-Arb1 = StringtoTree(form)
-form = raw_input("Ingrese la segunda formula, en notacion polaca inversa: ")
-Arb2 = StringtoTree(form)
+#Ejercicio 5 (d)
+cad = list('qp>')
+cad2 = list('qp-O')
 i = Interps()
-if Equival(Arb1, Arb2, i):
-	print "Las dos formulas son equivalentes"
-else:
-	print "Las dos formulas no son equivalentes"
+form = StringtoTree(cad)
+form2 = StringtoTree(cad2)
+print u"fórmula 1: ", Inorder(form)
+print u"fórmula 2:", Inorder(form2)
+print u"Las dos fórmulas son equivalentes? ", Equival(form, form2, i)
+print "\n"
+print "-------------------------------------------------------------"+'\n'
+
+#Ejercicio 5 (a)
+cad3 = list('rqOpY')
+cad4 = list('rpYqpYO')
+form3 = StringtoTree(cad3)
+form4 = StringtoTree(cad4)
+print u"fórmula 3: ", Inorder(form3)
+print u"fórmula 4:", Inorder(form4)
+print u"Las dos fórmulas son equivalentes? ", Equival(form3, form4, i)
+print "\n"
+print "-------------------------------------------------------------"+'\n'
+
+#Ejercicio 5 (b)
+cad5 = list('qpO')
+cad6 = list('q-p-Y-')
+form5 = StringtoTree(cad5)
+form6 = StringtoTree(cad6)
+print u"fórmula 5: ", Inorder(form5)
+print u"fórmula 6:", Inorder(form6)
+print u"Las dos fórmulas son equivalentes? ", Equival(form5, form6, i)
+print "\n"
+print "-------------------------------------------------------------"+'\n'
+
+#Ejercicio 5 (c)
+cad7 = list('qpY')
+cad8 = list('q-p-O-')
+form7 = StringtoTree(cad7)
+form8 = StringtoTree(cad8)
+print u"fórmula 7: ", Inorder(form7)
+print u"fórmula 8:", Inorder(form8)
+print u"Las dos fórmulas son equivalentes? ", Equival(form7, form8, i)
+print "\n"
+print "-------------------------------------------------------------"+'\n'
+
+#Ejercicio equivalente al 10% del taller: 
+a=[]
+cad9 = list('tsrOqp>->Y')
+form9 = StringtoTree(cad9)
+for i in Interps():
+    if Vi(form9,i):
+        a.append(i)
+print u"Todas las interpretaciones que hacen verdadera a la fórmula ", Inorder(form9)
+print u" son: "+'\n'+'\n', a
