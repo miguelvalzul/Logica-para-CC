@@ -25,34 +25,64 @@ def dibujar_puertas(f, n):
     axes.get_yaxis().set_visible(False)
 
     # Cargando imagen de las puertas
-    arr_img = plt.imread("puerta.png", format='png')
-    imagebox1 = OffsetImage(arr_img, zoom=0.178)
+    arr_img = plt.imread("puertaD.png", format='png')
+    imagebox1 = OffsetImage(arr_img, zoom=0.4)
     imagebox1.image.axes = axes
-
-    # Cargando imagen de los monstruos
-    arr_img = plt.imread("monstruo.png", format='png')
-    imagebox2 = OffsetImage(arr_img, zoom=0.178)
+    
+    arr_img = plt.imread("puertaED.png", format='png')
+    imagebox2 = OffsetImage(arr_img, zoom=0.4)
     imagebox2.image.axes = axes
-    # Cargando imagen de los diplomas
-    arr_img = plt.imread("diploma.png", format='png')
-    imagebox3 = OffsetImage(arr_img, zoom=0.178)
+    
+    arr_img = plt.imread("puertaRD.png", format='png')
+    imagebox3 = OffsetImage(arr_img, zoom=0.4)
     imagebox3.image.axes = axes
+    
+    arr_img = plt.imread("puertaCD.png", format='png')
+    imagebox4 = OffsetImage(arr_img, zoom=0.4)
+    imagebox4.image.axes = axes
+    
+    arr_img = plt.imread("puertaM.png", format='png')
+    imagebox5 = OffsetImage(arr_img, zoom=0.4)
+    imagebox5.image.axes = axes
+    
+    arr_img = plt.imread("puertaEM.png", format='png')
+    imagebox6 = OffsetImage(arr_img, zoom=0.4)
+    imagebox6.image.axes = axes
+    
+    arr_img = plt.imread("puertaRM.png", format='png')
+    imagebox7 = OffsetImage(arr_img, zoom=0.4)
+    imagebox7.image.axes = axes
+    
+    arr_img = plt.imread("puertaCM.png", format='png')
+    imagebox8 = OffsetImage(arr_img, zoom=0.4)
+    imagebox8.image.axes = axes
+
+    
     # Creando las direcciones en la imagen de acuerdo a literal
     direcciones = {}
-    direcciones[1] = [0.333, 0.667]
-    direcciones[2] = [0.667, 0.667]
-    direcciones[3] = [0.333, 0.333]
-    direcciones[4] = [0.667, 0.333]
+    direcciones[1] = [0.13, 0.467]
+    direcciones[2] = [0.37, 0.467]
+    direcciones[3] = [0.62, 0.467]
+    direcciones[4] = [0.88, 0.467] 
+                                                                
 
+
+    ab = AnnotationBbox(imagebox5, direcciones[1], frameon=False)
+    ab2 = AnnotationBbox(imagebox6, direcciones[2], frameon=False)
+    ab3 = AnnotationBbox(imagebox7, direcciones[3], frameon=False)
+    ab4 = AnnotationBbox(imagebox8, direcciones[4], frameon=False)
+    axes.add_artist(ab)
+    axes.add_artist(ab2)
+    axes.add_artist(ab3)
+    axes.add_artist(ab4)
+    
+    cont=1
     for l in f:
-        ab = AnnotationBbox(imagebox1, direcciones[int(l)], frameon=False)
-        axes.add_artist(ab)
-        if '~' in l:
-            ab = AnnotationBbox(imagebox2, direcciones[int(l)], frameon=False)
-            axes.add_artist(ab)
-        else:
-            ab = AnnotationBbox(imagebox3, direcciones[int(l)], frameon=False)
-            axes.add_artist(ab)
+        if '~' not in l:
+            dip = AnnotationBbox(eval("imagebox"+str(cont)), direcciones[cont], frameon=False)
+            axes.add_artist(dip)
+        
+        cont += 1
 
     # plt.show()
     fig.savefig("puertas_" + str(n) + ".png")
@@ -62,7 +92,6 @@ def dibujar_puertas(f, n):
 # importando paquetes para dibujar
 print "Importando paquetes..."
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 import csv
 from sys import argv
