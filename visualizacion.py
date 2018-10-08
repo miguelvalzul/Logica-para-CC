@@ -24,63 +24,29 @@ def dibujar_puertas(f, n):
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
 
-    # Dibujo la imagen base
-    step = 1./3
-    tangulos = []
-    # Creo los cuadrados claros en el tablero
-    tangulos.append(patches.Rectangle(*[(0, step), step, step],\
-            facecolor='cornsilk'))
-    tangulos.append(patches.Rectangle(*[(step, 0), step, step],\
-            facecolor='cornsilk'))
-    tangulos.append(patches.Rectangle(*[(2 * step, step), step, step],\
-            facecolor='cornsilk'))
-    tangulos.append(patches.Rectangle(*[(step, 2 * step), step, step],\
-            facecolor='cornsilk'))
-    # Creo los cuadrados oscuros en el tablero
-    tangulos.append(patches.Rectangle(*[(2 * step, 2 * step), step, step],\
-            facecolor='lightslategrey'))
-    tangulos.append(patches.Rectangle(*[(0, 2 * step), step, step],\
-            facecolor='lightslategrey'))
-    tangulos.append(patches.Rectangle(*[(2 * step, 0), step, step],\
-            facecolor='lightslategrey'))
-    tangulos.append(patches.Rectangle(*[(step, step), step, step],\
-            facecolor='lightslategrey'))
-    tangulos.append(patches.Rectangle(*[(0, 0), step, step],\
-            facecolor='lightslategrey'))
-
-    # Creo las líneas del tablero
-    for j in range(3):
-        locacion = j * step
-        # Crea linea horizontal en el rectangulo
-        tangulos.append(patches.Rectangle(*[(0, step + locacion), 1, 0.005],\
-                facecolor='black'))
-        # Crea linea vertical en el rectangulo
-        tangulos.append(patches.Rectangle(*[(step + locacion, 0), 0.005, 1],\
-                facecolor='black'))
-
-    for t in tangulos:
-        axes.add_patch(t)
-
     # Cargando imagen de las puertas
     arr_img = plt.imread("puerta.png", format='png')
-    imagebox = OffsetImage(arr_img, zoom=0.178)
-    imagebox.image.axes = axes
+    imagebox1 = OffsetImage(arr_img, zoom=0.178)
+    imagebox1.image.axes = axes
 
+    # Cargando imagen de los monstruos
+    arr_img = plt.imread("monstruo.png", format='png')
+    imagebox2 = OffsetImage(arr_img, zoom=0.178)
+    imagebox2.image.axes = axes
+    
     # Creando las direcciones en la imagen de acuerdo a literal
     direcciones = {}
-    direcciones[1] = [0.165, 0.835]
-    direcciones[2] = [0.5, 0.835]
-    direcciones[3] = [0.835, 0.835]
-    direcciones[4] = [0.165, 0.5]
-    direcciones[5] = [0.5, 0.5]
-    direcciones[6] = [0.835, 0.5]
-    direcciones[7] = [0.165, 0.165]
-    direcciones[8] = [0.5, 0.165]
-    direcciones[9] = [0.835, 0.165]
+    direcciones[1] = [0.333, 0.667]
+    direcciones[2] = [0.667, 0.667]
+    direcciones[3] = [0.333, 0.333]
+    direcciones[4] = [0.667, 0.333]
 
     for l in f:
-        if '~' not in l:
-            ab = AnnotationBbox(imagebox, direcciones[int(l)], frameon=False)
+        if '~' in l:
+            ab = AnnotationBbox(imagebox2, direcciones[int(l)], frameon=False)
+            axes.add_artist(ab)
+        else:
+            ab = AnnotationBbox(imagebox1, direcciones[int(l)], frameon=False)
             axes.add_artist(ab)
 
     # plt.show()
