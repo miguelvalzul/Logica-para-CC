@@ -11,20 +11,20 @@
 # Salida: archivo puertas_%i.png, donde %i es un numero natural
 
 
-def dibujar_tablero(f, n):
-    # Visualiza un tablero dada una formula f
+def dibujar_puertas(f, n):
+    # Visualiza un conjunto de cuatro puertas dada una formula f
     # Input:
     #   - f, una lista de literales
     #   - n, un numero de identificacion del archivo
     # Output:
-    #   - archivo de imagen tablero_n.png
+    #   - archivo de imagen puertas_n.png
 
     # Inicializo el plano que contiene la figura
     fig, axes = plt.subplots()
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
 
-    # Dibujo el tablero
+    # Dibujo la imagen base
     step = 1./3
     tangulos = []
     # Creo los cuadrados claros en el tablero
@@ -61,8 +61,8 @@ def dibujar_tablero(f, n):
     for t in tangulos:
         axes.add_patch(t)
 
-    # Cargando imagen de caballo
-    arr_img = plt.imread("caballo.png", format='png')
+    # Cargando imagen de las puertas
+    arr_img = plt.imread("puerta.png", format='png')
     imagebox = OffsetImage(arr_img, zoom=0.178)
     imagebox.image.axes = axes
 
@@ -84,7 +84,7 @@ def dibujar_tablero(f, n):
             axes.add_artist(ab)
 
     # plt.show()
-    fig.savefig("tablero_" + str(n) + ".png")
+    fig.savefig("puertas_" + str(n) + ".png")
 
 
 #################
@@ -103,8 +103,8 @@ with open(data_archivo) as csv_file:
     data = csv.reader(csv_file, delimiter=',')
     contador = 1
     for l in data:
-        print "Dibujando tablero:", l
-        dibujar_tablero(l, contador)
+        print "Dibujando puertas:", l
+        dibujar_puertas(l, contador)
         contador += 1
 
 csv_file.close()
