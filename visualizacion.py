@@ -33,7 +33,10 @@ def dibujar_puertas(f, n):
     arr_img = plt.imread("monstruo.png", format='png')
     imagebox2 = OffsetImage(arr_img, zoom=0.178)
     imagebox2.image.axes = axes
-    
+    # Cargando imagen de los diplomas
+    arr_img = plt.imread("diploma.png", format='png')
+    imagebox3 = OffsetImage(arr_img, zoom=0.178)
+    imagebox3.image.axes = axes
     # Creando las direcciones en la imagen de acuerdo a literal
     direcciones = {}
     direcciones[1] = [0.333, 0.667]
@@ -42,11 +45,13 @@ def dibujar_puertas(f, n):
     direcciones[4] = [0.667, 0.333]
 
     for l in f:
+        ab = AnnotationBbox(imagebox1, direcciones[int(l)], frameon=False)
+        axes.add_artist(ab)
         if '~' in l:
             ab = AnnotationBbox(imagebox2, direcciones[int(l)], frameon=False)
             axes.add_artist(ab)
         else:
-            ab = AnnotationBbox(imagebox1, direcciones[int(l)], frameon=False)
+            ab = AnnotationBbox(imagebox3, direcciones[int(l)], frameon=False)
             axes.add_artist(ab)
 
     # plt.show()
