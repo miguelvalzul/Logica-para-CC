@@ -24,26 +24,6 @@ def Inorder(f):
 	else:
 		return "(" + Inorder(f.left) + f.label + Inorder(f.right) + ")"
 
-def cadenaAlista(f, conectivos):
-	f = list(f)
-	cadena=[]
-	word=""
-	cont=0
-	for j in f:
-		print "j: ", j
-		if j!=" " and j not in conectivos:
-			word=word+j
-			print "word: ", word
-		if j==" " or cont==len(f)-1:
-			cadena.append(word)
-			word=""
-		if j in conectivos:
-			cadena.append(word)
-			cadena.append(j)
-			word=""
-			cont=cont+1
-	return cadena
-
 def StringtoTree(A, letrasProposicionales):
     # Crea una formula como tree dada una formula como cadena escrita en notacion polaca inversa
     # Input: A, lista de caracteres con una formula escrita en notacion polaca inversa
@@ -64,20 +44,6 @@ def StringtoTree(A, letrasProposicionales):
             del pila[-1]
             pila.append(formulaAux)
     return pila[-1]
-
-def imprime_tableau(tableau):
-	cadena = '['
-	for l in tableau:
-		cadena += "{"
-		primero = True
-		for f in l:
-			if primero == True:
-				primero = False
-			else:
-				cadena += ", "
-			cadena += Inorder(f)
-		cadena += "}"
-	return cadena + "]"
 
 def imprime_hoja(H):
 	cadena = "{"
@@ -117,8 +83,6 @@ def Tableaux(lista_hojas, letrasProposicionales):
 	# 		  - interpretaciones: lista de listas de literales que hacen verdadera
 	#			la lista_hojas
 
-	print "Trabajando con: ", imprime_tableau(lista_hojas)
-
 	marcas = ['x', 'o']
 	interpretaciones = [] # Lista para guardar interpretaciones que satisfacen la raiz
 
@@ -127,10 +91,8 @@ def Tableaux(lista_hojas, letrasProposicionales):
 		# Hay hojas sin marcar
 		# Crea la lista de hojas sin marcar
 		hojas_no_marcadas = [x for x in lista_hojas if x not in marcas]
-		print u"Cantidad de hojas sin marcar: ", len(hojas_no_marcadas)
 		# Selecciona una hoja no marcada
 		hoja = choice(hojas_no_marcadas)
-		print "Trabajando con hoja: ", imprime_hoja(hoja)
 
 		# Busca formulas que no son literales
 		formulas_no_literales = []
@@ -148,8 +110,6 @@ def Tableaux(lista_hojas, letrasProposicionales):
 		# print "Formulas que no son literales: ", imprime_hoja(formulas_no_literales)
 
 		if formulas_no_literales != []: # Verifica si hay formulas que no son literales
-			# Hay formulas que no son literales
-			print "Hay formulas que no son literales"
 			# Selecciona una formula no literal
 			f = choice(formulas_no_literales)
 			if f.label == 'Y':
@@ -233,21 +193,18 @@ def Tableaux(lista_hojas, letrasProposicionales):
 			for l in literales: # Verificamos que no hayan pares complementarios en la hoja
 				if '-' not in l: # Verifica si el literal es positivo
 					if '-' + l in literales: # Verifica si el complementario esta en la hoja
-						print "La hoja " + imprime_hoja(hoja) +  " es inconsistente!"
 						lista_hojas.remove(hoja)
 						# lista_hojas.append('x') # Marca la hoja como inconsistente con una 'x'
 						hojaConsistente = False
 						break
 
 				elif l[1:] in literales: # Verifica si el complementario esta en la hoja
-						print "La hoja " + imprime_hoja(hoja) +  " es inconsistente!"
 						lista_hojas.remove(hoja)
 						# lista_hojas.append('x') # Marca la hoja como inconsistente con una 'x'
 						hojaConsistente = False
 						break
 
 			if hojaConsistente: # Se recorrieron todos los literales y no esta el complementario
-				print "La hoja " + imprime_hoja(hoja) +  " es consistente :)"
 				interpretaciones.append(hoja) # Guarda la interpretacion que satisface la raiz
 				lista_hojas.remove(hoja)
 				# lista_hojas.append('o') # Marca la hoja como consistente con una 'o'
@@ -255,25 +212,20 @@ def Tableaux(lista_hojas, letrasProposicionales):
 	# Dice si la raiz es inconsistente
 	# print "Hay " + str(len(interpretaciones)) + u" interpretaciones que satisfacen la formula"
 	if len(interpretaciones) > 0:
-		print u"La formula es satisfacible por las siguientes interpretaciones: "
-
 		# Interpreta como string la lista de interpretaciones
 		INTS = []
 		for i in interpretaciones:
 			aux = [Inorder(l) for l in i]
 			INTS.append(aux)
-			print aux
 
 		# Eliminamos repeticiones dentro de cada interpretacion
 		INTS = [list(set(i)) for i in INTS]
 		# Eliminamos interpretaciones repetidas
 		INTS_set = set(tuple(x) for x in INTS)
 		INTS = [list(x) for x in INTS_set]
-		print "Hay " + str(len(INTS)) + u" interpretaciones que satisfacen la formula"
 
 		return "Satisfacible", INTS
 	else:
-		print(u"La lista de formulas dada es insatisfacible!")
 		return "Insatisfacible", None
 
 ##############################################################################

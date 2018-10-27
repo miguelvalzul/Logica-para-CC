@@ -5,6 +5,8 @@
 
 import Tableaux
 
+print("Creando formula...")
+
 #Creacion de las letras proposicionales
 #1 = El diploma esta detras de la puerta de ebano
 #2 = El diploma esta detras de la puerta de caoba
@@ -55,17 +57,18 @@ for x in letrasProposicionales:
         posibleSolucion += "O"
     regla3 += posibleSolucion
 
+
 formula += (regla3 + "Y")
+
+print("Implementando tableau...")
 
 #Creacion de la formula como objeto
 
 arbol = Tableaux.StringtoTree(formula, letrasProposicionales)
-print("Formula = " + Tableaux.Inorder(arbol))
 
 #Uso del algoritmo de los tableaux
 
-listaHojas = [[arbol]]
-satisfacibilidad, interpretaciones = Tableaux.Tableaux(listaHojas, letrasProposicionales)
+satisfacibilidad, interpretaciones = Tableaux.Tableaux([[arbol]], letrasProposicionales)
 
 
 if satisfacibilidad == 'Satisfacible':
@@ -83,7 +86,6 @@ if satisfacibilidad == 'Satisfacible':
         import visualizacion
         contador = 1
         for n in interpretaciones:
-            print ("Trabajando con literales:", n)
             visualizacion.dibujar_puertas(n,contador)
             contador += 1
 

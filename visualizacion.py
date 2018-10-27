@@ -6,7 +6,7 @@
 # el literal es positivo sii hay un diploma oculto detrás de la puerta en cuestión.
 
 # Formato de la entrada: - las letras proposionales seran: 1, 2, 3, 4;
-#                        - solo se aceptan literales (ej. 1, ~2, 3, ~4, etc.)
+#                        - solo se aceptan literales (ej. 1, -2, 3, -4, etc.)
 
 # Salida: archivo puertas_%i.png, donde %i es un numero natural
 
@@ -25,35 +25,35 @@ def dibujar_puertas(f, n):
     axes.get_yaxis().set_visible(False)
 
     # Cargando imagen de las puertas
-    arr_img = plt.imread("puertaD.png", format='png')
+    arr_img = plt.imread("puertaED.png", format='png')
     imagebox1 = OffsetImage(arr_img, zoom=0.4)
     imagebox1.image.axes = axes
     
-    arr_img = plt.imread("puertaED.png", format='png')
+    arr_img = plt.imread("puertaCD.png", format='png')
     imagebox2 = OffsetImage(arr_img, zoom=0.4)
     imagebox2.image.axes = axes
     
-    arr_img = plt.imread("puertaRD.png", format='png')
+    arr_img = plt.imread("puertaD.png", format='png')
     imagebox3 = OffsetImage(arr_img, zoom=0.4)
     imagebox3.image.axes = axes
     
-    arr_img = plt.imread("puertaCD.png", format='png')
+    arr_img = plt.imread("puertaRD.png", format='png')
     imagebox4 = OffsetImage(arr_img, zoom=0.4)
     imagebox4.image.axes = axes
     
-    arr_img = plt.imread("puertaM.png", format='png')
+    arr_img = plt.imread("puertaEM.png", format='png')
     imagebox5 = OffsetImage(arr_img, zoom=0.4)
     imagebox5.image.axes = axes
     
-    arr_img = plt.imread("puertaEM.png", format='png')
+    arr_img = plt.imread("puertaCM.png", format='png')
     imagebox6 = OffsetImage(arr_img, zoom=0.4)
     imagebox6.image.axes = axes
     
-    arr_img = plt.imread("puertaRM.png", format='png')
+    arr_img = plt.imread("puertaM.png", format='png')
     imagebox7 = OffsetImage(arr_img, zoom=0.4)
     imagebox7.image.axes = axes
     
-    arr_img = plt.imread("puertaCM.png", format='png')
+    arr_img = plt.imread("puertaRM.png", format='png')
     imagebox8 = OffsetImage(arr_img, zoom=0.4)
     imagebox8.image.axes = axes
 
@@ -76,13 +76,19 @@ def dibujar_puertas(f, n):
     axes.add_artist(ab3)
     axes.add_artist(ab4)
     
-    cont=1
     for l in f:
-        if '~' not in l:
-            dip = AnnotationBbox(eval("imagebox"+str(cont)), direcciones[cont], frameon=False)
+        if '-' not in l:
+            num = 0
+            if "1" in l:
+                num = 1
+            elif "2" in l:
+                num = 2
+            elif "3" in l:
+                num = 3
+            elif "4" in l:
+                num = 4
+            dip = AnnotationBbox(eval("imagebox"+str(num)), direcciones[num], frameon=False)
             axes.add_artist(dip)
-        
-        cont += 1
 
     # plt.show()
     fig.savefig("puertas_" + str(n) + ".png")
@@ -90,21 +96,17 @@ def dibujar_puertas(f, n):
 
 #################
 # importando paquetes para dibujar
-print "Importando paquetes..."
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 import csv
-from sys import argv
-print "Listo!"
+#from sys import argv
 
-script, data_archivo = argv
+#script, data_archivo = argv
 
-with open(data_archivo) as csv_file:
-    data = csv.reader(csv_file, delimiter=',')
-    contador = 1
-    for l in data:
-        print "Dibujando puertas:", l
-        dibujar_puertas(l, contador)
-        contador += 1
-
-csv_file.close()
+#with open(data_archivo) as csv_file:
+#    data = csv.reader(csv_file, delimiter=',')
+#    contador = 1
+#    for l in data:
+#        print "Dibujando puertas:", l
+#        dibujar_puertas(l, contador)
+#        contador += 1
