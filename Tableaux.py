@@ -1,5 +1,3 @@
-#-*-coding: utf-8-*-
-
 from random import choice
 
 ##############################################################################
@@ -75,7 +73,7 @@ def Tableaux(lista_hojas, letrasProposicionales):
 
 	# Algoritmo de creacion de tableau a partir de lista_hojas
 
-	# Imput: - lista_hojas: lista de lista de formulas
+	# Input: - lista_hojas: lista de lista de formulas
 	#			(una hoja es una lista de formulas)
 	#		 - letrasProposicionales: lista de letras proposicionales del lenguaje
 
@@ -99,21 +97,16 @@ def Tableaux(lista_hojas, letrasProposicionales):
 		for x in hoja:
 			if x.label not in letrasProposicionales:
 				if x.label != '-':
-					# print Inorder(x) + " no es un literal"
 					formulas_no_literales.append(x)
 					break
 				elif x.right.label not in letrasProposicionales:
-					# print Inorder(x) + " no es un literal"
 					formulas_no_literales.append(x)
 					break
-
-		# print "Formulas que no son literales: ", imprime_hoja(formulas_no_literales)
 
 		if formulas_no_literales != []: # Verifica si hay formulas que no son literales
 			# Selecciona una formula no literal
 			f = choice(formulas_no_literales)
 			if f.label == 'Y':
-				# print u"Formula 2alfa" # Identifica la formula como A1 y A2
 				hoja.remove(f) # Quita a f de la hoja
 				A1 = f.left
 				if  A1 not in hoja:
@@ -122,7 +115,6 @@ def Tableaux(lista_hojas, letrasProposicionales):
 				if  A2 not in hoja:
 					hoja.append(A2) # Agrega A2
 			elif f.label == 'O':
-				# print u"Formula 2beta" # Identifica la formula como B1 o B2
 				hoja.remove(f) # Quita la formula de la hoja
 				lista_hojas.remove(hoja) # Quita la hoja de la lista de hojas
 				B1 = f.left
@@ -134,7 +126,6 @@ def Tableaux(lista_hojas, letrasProposicionales):
 					S2 = [x for x in hoja] + [B2] # Crea nueva hoja con B2
 				lista_hojas.append(S2) # Agrega nueva hoja con B2
 			elif f.label == '>':
-				# print u"Formula 3beta" # Identifica la formula como B1 > B2
 				hoja.remove(f) # Quita la formula de la hoja
 				lista_hojas.remove(hoja) # Quita la hoja de la lista de hojas
 				noB1 = Tree('-', None, f.left)
@@ -147,13 +138,11 @@ def Tableaux(lista_hojas, letrasProposicionales):
 				lista_hojas.append(S2) # Agrega nueva hoja con B2
 			elif f.label == '-':
 				if f.right.label == '-':
-					# print u"Formula 1alfa" # Identifica la formula como no no A1
 					hoja.remove(f) # Quita a f de la hoja
 					A1 = f.right.right
 					if A1 not in hoja:
 						hoja.append(A1) # Agrega la formula sin doble negacion
 				elif f.right.label == 'O':
-					# print u"Formula 3alfa" # Identifica la formula como no(A1 o A2)
 					hoja.remove(f) # Quita a f de la hoja
 					noA1 = Tree('-', None, f.right.left)
 					if noA1 not in hoja:
@@ -162,7 +151,6 @@ def Tableaux(lista_hojas, letrasProposicionales):
 					if noA2 not in hoja:
 						hoja.append(noA2) # Agrega no A2
 				elif f.right.label == '>':
-					# print u"Formula 4alfa" # Identifica la formula como no(A1 > A2)
 					hoja.remove(f) # Quita a f de la hoja
 					A1 = f.right.left
 					if A1 not in hoja:
@@ -171,7 +159,6 @@ def Tableaux(lista_hojas, letrasProposicionales):
 					if noA2 not in hoja:
 						hoja.append(noA2) # Agrega no A2
 				elif f.right.label == 'Y':
-					# print u"Formula 1beta" # Identifica la formula como no(B1 y B2)
 					hoja.remove(f) # Quita la formula de la hoja
 					lista_hojas.remove(hoja) # Quita la hoja de la lista de hojas
 					noB1 = Tree('-', None, f.right.left)
@@ -184,33 +171,26 @@ def Tableaux(lista_hojas, letrasProposicionales):
 					lista_hojas.append(S2) # Agrega nueva hoja con no B2
 
 		else: # No hay formulas que no sean literales
-			# print "La hoja contiene solo literales!"
 			lista = list(imprime_hoja(hoja))
-			# print lista
 			literales = obtiene_literales(lista, letrasProposicionales)
-			# print literales
 			hojaConsistente = True
 			for l in literales: # Verificamos que no hayan pares complementarios en la hoja
 				if '-' not in l: # Verifica si el literal es positivo
 					if '-' + l in literales: # Verifica si el complementario esta en la hoja
 						lista_hojas.remove(hoja)
-						# lista_hojas.append('x') # Marca la hoja como inconsistente con una 'x'
 						hojaConsistente = False
 						break
 
 				elif l[1:] in literales: # Verifica si el complementario esta en la hoja
 						lista_hojas.remove(hoja)
-						# lista_hojas.append('x') # Marca la hoja como inconsistente con una 'x'
 						hojaConsistente = False
 						break
 
 			if hojaConsistente: # Se recorrieron todos los literales y no esta el complementario
 				interpretaciones.append(hoja) # Guarda la interpretacion que satisface la raiz
 				lista_hojas.remove(hoja)
-				# lista_hojas.append('o') # Marca la hoja como consistente con una 'o'
 
 	# Dice si la raiz es inconsistente
-	# print "Hay " + str(len(interpretaciones)) + u" interpretaciones que satisfacen la formula"
 	if len(interpretaciones) > 0:
 		# Interpreta como string la lista de interpretaciones
 		INTS = []
@@ -227,7 +207,3 @@ def Tableaux(lista_hojas, letrasProposicionales):
 		return "Satisfacible", INTS
 	else:
 		return "Insatisfacible", None
-
-##############################################################################
-# Fin definicion de objeto tree y funciones
-##############################################################################
